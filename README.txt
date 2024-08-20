@@ -1,1 +1,0 @@
-Resoluciones hechas por mi , no aseguro la correctitud de los ejercicios, sugiero que la usen de referencia.
