@@ -128,11 +128,26 @@ esPrimoAux n i
 
 
 --3
-
+--3-a
 inverso :: Float -> Maybe Float
 inverso x | x == 0 = Nothing
           | otherwise = Just (1/x)
 
+--3-b
+
+aEntero :: Either Int Bool -> Int
+aEntero result = case  result of 
+    Right bool -> if bool then 1 else 0 
+    Left number -> number
+
+
+
+--4-a 
+limpiar :: String -> String -> String
+limpiar _ [] = "" -- o []
+limpiar xs (y:ys) 
+                  | pertenece xs y = limpiar xs ys
+                  | otherwise = y : limpiar xs ys
 
 
 pertenece :: Eq a => [a] -> a -> Bool
@@ -143,18 +158,12 @@ pertenece  xs y
 
 -- Si usas la notacion x:xs usa pattern matching xq sino se rompe todo
 
-limpiar :: String -> String -> String
-limpiar _ [] = "" -- o []
-limpiar xs (y:ys) 
-                  | pertenece xs y = limpiar xs ys
-                  | otherwise = y : limpiar xs ys
-
 
 esVacia :: [a] -> Bool
 esVacia [] = True
 esVacia _ = False
 
-
+--4-b 
 todosIguales :: [Int] -> Bool
 todosIguales [] = True
 todosIguales [x] = True
@@ -163,6 +172,7 @@ todosIguales (x:xs) | x == head xs = todosIguales xs
 
 
 
+--4-c
 difPromedio :: [Float] -> [Float]
 difPromedio xs = difPromedioAux xs (sumarElementos xs / fromIntegral(length xs)) 
 
@@ -175,4 +185,6 @@ sumarElementos (x:xs)  = x + sumarElementos xs
 difPromedioAux :: [Float] -> Float -> [Float]
 difPromedioAux [] _ = []
 difPromedioAux (x:xs) promedio = (x - promedio) : difPromedioAux xs promedio
+
+
 
