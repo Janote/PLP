@@ -136,8 +136,8 @@ inverso x | x == 0 = Nothing
 --3-b
 
 aEntero :: Either Int Bool -> Int
-aEntero result = case  result of 
-    Right bool -> if bool then 1 else 0 
+aEntero result = case  result of
+    Right bool -> if bool then 1 else 0
     Left number -> number
 
 
@@ -145,7 +145,7 @@ aEntero result = case  result of
 --4-a 
 limpiar :: String -> String -> String
 limpiar _ [] = "" -- o []
-limpiar xs (y:ys) 
+limpiar xs (y:ys)
                   | pertenece xs y = limpiar xs ys
                   | otherwise = y : limpiar xs ys
 
@@ -174,10 +174,10 @@ todosIguales (x:xs) | x == head xs = todosIguales xs
 
 --4-c
 difPromedio :: [Float] -> [Float]
-difPromedio xs = difPromedioAux xs (sumarElementos xs / fromIntegral(length xs)) 
+difPromedio xs = difPromedioAux xs (sumarElementos xs / fromIntegral (length xs))
 
 sumarElementos :: [Float] -> Float
-sumarElementos [] = 0 
+sumarElementos [] = 0
 sumarElementos (x:xs)  = x + sumarElementos xs
 
 
@@ -185,6 +185,34 @@ sumarElementos (x:xs)  = x + sumarElementos xs
 difPromedioAux :: [Float] -> Float -> [Float]
 difPromedioAux [] _ = []
 difPromedioAux (x:xs) promedio = (x - promedio) : difPromedioAux xs promedio
+
+
+data AB a = Nil | Bin (AB a) a (AB a)
+
+
+vacioAB :: AB a -> Bool
+vacioAB Nil = True
+vacioAB _  = False
+
+
+
+negacionAB :: AB Bool -> AB Bool
+negacionAB Nil  = Nil
+negacionAB (Bin left value right) =  Bin (negacionAB left) (not value) (negacionAB right)
+
+
+
+
+productoAb :: AB Int -> Int
+productoAb Nil = 1 
+productoAb (Bin left value right) =  value * productoAb(left) * productoAb(right)
+
+
+miArbol :: AB Int
+miArbol = Bin
+    (Bin Nil 2 Nil)  -- Subárbol izquierdo
+    3                -- Valor del nodo raíz
+    (Bin Nil 4 Nil)  -- Subárbol derecho
 
 
 
