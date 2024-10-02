@@ -1,0 +1,145 @@
+ii. ∀ xs::[a] . ∀ ys::[a] . length (append xs ys) = length xs + length ys
+
+Defino P(xs) = length (append xs ys) = length xs + length ys
+
+P(x:xs) = length (append (x:xs) ys) = length (x:xs) + length ys
+
+
+Por induccion sobre listas , debo probar P ([]) y que P(xs) ->  P(x:xs)
+
+
+P([]) =  length( append [] ys ) = length  [] + length ys 
+
+
+length( append [] ys ) =A0 length (ys) = 0 + length ys =  length [] + length ys 
+
+
+
+
+P(x:xs) = length (append (x:xs) ys) = length (x:xs) + length ys
+
+length (append (x:xs) ys) =A1  length( x: append xs ys) =L1 1 + length ( append xs ys) =HI 1 + length xs + length ys =L1 length (x:xs) + length ys
+
+iii. ∀ xs::[a] . ∀ x::a . [x]++xs = x:xs
+
+H.I
+P(xs) = [x]++xs = x:xs 
+
+T.I
+P(x:xs) = [x] ++ (x:xs) = x:(x:xs)
+
+
+Por induccion sobre listas , debo probar P ([]) y que P(xs) ->  P(x:xs)
+
+
+P([]) = [x] ++ [] =  x : [] 
+
+[x] ++ []  =  foldr (:) ys xs  {++}
+           =F1  (:) x (foldr (:) [] [])
+           =F0 (:) x [] 
+           = x : [] 
+
+P(x:xs) = [x] ++ (x:xs) = x:(x:xs)
+
+[x] ++ (x:xs)   = [x] ++ [x] ++ xs  {HI} 
+=  foldr (:) [x] [x] ++ xs {++} 
+=  (:) x foldr( (:) [x] []) ++ xs {F1}
+= (:) X [X] ++ xs {F0}
+= x : [x] ++ xs 
+ 
+Si le aplicamos la h.i a la otra igualdad, queda que 
+
+x:(x:xs) =HI x : [x] ++ xs 
+
+
+
+iv. ∀ xs::[a] . ∀ f::(a->b) . length (map f xs) = length xs
+
+H.I
+P(xs) = length (map f xs) = length xs 
+
+T.I
+P(x:xs) =  length (map f (x:xs)) = length (x:xs)
+
+
+Por induccion sobre listas , debo probar P ([]) y que P(xs) ->  P(x:xs)
+
+P([]) = length (map f []) = length []
+
+
+ length (map f []) = length []   {M0}
+
+
+P(x:xs) =  length (map f (x:xs)) = length (x:xs)
+
+length (map f (x:xs)) = length (f x : map f xs)  {M1}
+length (f x : map f xs)  = 1 + length map  f xs    {L1 }
+1 + length map  f xs =H.I  1 + length xs         {H.I} 
+1 + length xs = length (x:xs)  {L1}
+
+
+
+
+v. ∀ xs::[a] . ∀ p::a->Bool . ∀ e::a . ((elem e (filter p xs)) ⇒ (elem e xs)) (asumiendo Eq a)
+
+
+
+
+P(xs): (elem e (filter p xs) = True) ⇒ (elem e xs = True)
+
+
+
+Caso base: P([])
+    
+elem e (filter p []) = True
+= elem e [] = True                                                  {def filter}
+= False = True                                                      {def elem}
+= False
+= False ⇒ (elem e xs = True)                                        {False implica cualquier cosa}
+
+
+
+
+Caso inductivo: ∀x :: a. ∀xs :: [a]. P(xs) ⇒ P(x:xs)
+
+elem e (filter p (x:xs)) = True 
+= elem e (if p x then x : filter p xs else filter p xs) = True      {def filter}
+
+Inducción sobre booleanos: p x :: Bool
+
+Caso (1): p x = False
+
+= elem e (filter p xs) = True
+= (elem e (filter p xs) = True) ⇒ (elem e xs = True)                {por HI}
+
+Si elem e (filter p xs) = False entonces False implica cualquier cosa.
+Si elem e (filter p xs) = True significa que e se encuentra en filter p xs ⊆ xs ⊆ x:xs.
+
+= (elem e (filter p xs) = True) ⇒ (elem e x:xs = True)
+Caso (2): p x = True
+
+= elem e (x : filter p xs) = True
+= (e == x || elem e (filter p xs)) = True                           {def elem}
+
+Inducción sobre booleanos: e == x :: Bool
+
+Caso (2.1): (e == x) = False
+
+= (False || elem e (filter p xs)) = True
+= elem e (filter p xs) = True                                       {def ||}
+= (elem e (filter p xs) = True) ⇒ (elem e xs = True)                {por HI}
+= (elem e (filter p xs) = True) ⇒ (elem e x:xs = True)              {por el caso (1)}
+Caso (2.2): (e == x) = True
+
+= (True || elem e (filter p xs)) = True
+= True = True                                                       {def ||}
+= True
+QVQ: True ⇒ (elem e x:xs = True) para que valga P(x:xs)
+Basta ver que: elem e x:xs = True sabiendo que e == x
+
+elem e x:xs = True
+= (e == x || elem e xs) = True                                      {def elem}
+= (True || elem e xs) = True                                        {e == x}
+= True = True                                                       {def ||}
+= True
+En todos los casos llegamos a probar que vale P(xs) ⇒ P(x:xs). Probamos entonces que vale ∀xs :: [a]. P(xs).
